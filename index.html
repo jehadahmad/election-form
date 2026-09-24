@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استمارة حصر وتحديث البيانات</title>
+    <style>
+        :root {
+            --primary: #1b4332;
+            --secondary: #2d6a4f;
+            --accent: #d8f3dc;
+            --bg: #f4f6f8;
+            --card: #ffffff;
+            --text: #2b2d42;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: var(--card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            color: var(--primary);
+            margin: 0 0 5px 0;
+        }
+
+        .section-title {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin: 20px 0 15px 0;
+            font-size: 15px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: var(--primary);
+        }
+
+        input, select {
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 5px rgba(45, 106, 79, 0.2);
+        }
+
+        .child-box {
+            background: #f9fbf9;
+            border: 1px dashed var(--secondary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .child-box h5 {
+            margin: 0 0 10px 0;
+            color: var(--secondary);
+            font-size: 14px;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 25px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: var(--secondary);
+        }
+
+        button:disabled {
+            background: #a5d6a7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>استمارة حصر وتحديث البيانات</h2>
+        <small style="color: #6c757d;">يرجى تعبئة كافة الحقول المطلوبة بدقة</small>
+    </div>
+
+    <form id="dataForm">
+        <!-- بيانات الزوج -->
+        <div class="section-title">بيانات الزوج (رب الأسرة)</div>
+        <div class="grid">
+            <div class="field">
+                <label>اسم الزوج رباعي *</label>
+                <input type="text" id="husbandName" required placeholder="أدخل الاسم الرباعي">
+            </div>
+            <div class="field">
+                <label>هوية الزوج *</label>
+                <input type="text" id="husbandId" required placeholder="أدخل رقم الهوية">
+            </div>
+            <div class="field">
+                <label>جوال الزوج *</label>
+                <input type="tel" id="husbandPhone" required placeholder="059xxxxxxx">
+            </div>
+        </div>
+
+        <!-- بيانات الزوجة -->
+        <div class="section-title">بيانات الزوجة</div>
+        <div class="grid">
+            <div class="field">
+                <label>اسم الزوجة رباعي *</label>
+                <input type="text" id="wifeName" required placeholder="أدخل اسم الزوجة الرباعي">
+            </div>
+            <div class="field">
+                <label>هوية الزوجة *</label>
+                <input type="text" id="wifeId" required placeholder="أدخل رقم الهوية">
+            </div>
+        </div>
+
+        <!-- الأبناء -->
+        <div class="section-title">الأبناء (سن 18 عاماً فما فوق - غير متزوجين)</div>
+        <div class="field" style="margin-bottom: 10px;">
+            <label>اختر عدد الأبناء في هذا السن:</label>
+            <select id="childrenCount" onchange="renderChildrenFields()">
+                <option value="0">لا يوجد</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+
+        <div id="childrenContainer"></div>
+
+        <!-- التواصل الرئيسي -->
+        <div class="section-title">التواصل الرئيسي</div>
+        <div class="grid">
+            <div class="field" style="grid-column: 1 / -1;">
+                <label>جوال الأب للتواصل الرئيسي *</label>
+                <input type="tel" id="fatherPhone" required placeholder="059xxxxxxx">
+            </div>
+        </div>
+
+        <button type="submit" id="submitBtn">حفظ وإرسال البيانات</button>
+    </form>
+</div>
+
+<script>
+    // تغيير خانات الأبناء تلقائياً بنفس الصفحة
+    function renderChildrenFields() {
+        const count = parseInt(document.getElementById('childrenCount').value);
+        const container = document.getElementById('childrenContainer');
+        container.innerHTML = '';
+
+        const childLabels = ["الأول", "الثاني", "الثالث", "الرابع"];
+
+        for (let i = 0; i < count; i++) {
+            const div = document.createElement('div');
+            div.className = 'child-box';
+            div.innerHTML = `
+                <h5>بيانات الابن ${childLabels[i]}</h5>
+                <div class="grid">
+                    <div class="field">
+                        <label>اسم الابن ${childLabels[i]} رباعي *</label>
+                        <input type="text" class="child-name" required placeholder="الاسم رباعي">
+                    </div>
+                    <div class="field">
+                        <label>هوية الابن ${childLabels[i]} *</label>
+                        <input type="text" class="child-id" required placeholder="رقم الهوية">
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+    }
+
+    // ضع رابط Google Apps Script الخاص بك هنا
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby6othIt04hSVvBtDhg7FZArJ2asyJRdGgetLCTsD9L5-ZxwFgazogHtzruBaMhPJN69w/exec";
+
+    document.getElementById('dataForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = "جاري إرسال البيانات...";
+
+        // تجميع عناصر الأبناء
+        const nameInputs = document.querySelectorAll('.child-name');
+        const idInputs = document.querySelectorAll('.child-id');
+        let childrenList = [];
+
+        for (let i = 0; i < nameInputs.length; i++) {
+            childrenList.push({
+                name: nameInputs[i].value,
+                id: idInputs[i].value
+            });
+        }
+
+        const payload = {
+            husbandName: document.getElementById('husbandName').value,
+            husbandId: document.getElementById('husbandId').value,
+            husbandPhone: document.getElementById('husbandPhone').value,
+            wifeName: document.getElementById('wifeName').value,
+            wifeId: document.getElementById('wifeId').value,
+            childrenList: childrenList,
+            fatherPhone: document.getElementById('fatherPhone').value
+        };
+
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        }).then(() => {
+            alert('تم حفظ البيانات بنجاح في الجدول!');
+            document.getElementById('dataForm').reset();
+            renderChildrenFields();
+            btn.disabled = false;
+            btn.innerText = "حفظ وإرسال البيانات";
+        }).catch(err => {
+            alert('حدث خطأ أثناء الإرسال، يرجى المحاولة لاحقاً');
+            btn.disabled = false;
+            btn.innerText = "حفظ وإرسال البيانات";
+        });
+    });
+</script>
+
+</body>
+</html>
