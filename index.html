@@ -14,10 +14,6 @@
             --text: #2b2d42;
         }
 
-        * {
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
@@ -51,7 +47,7 @@
         .section-title {
             background: var(--accent);
             color: var(--primary);
-            padding: 10px 14px;
+            padding: 8px 12px;
             border-radius: 6px;
             font-weight: bold;
             margin: 20px 0 15px 0;
@@ -72,30 +68,28 @@
         label {
             font-size: 13px;
             font-weight: bold;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             color: var(--primary);
         }
 
         input, select {
-            padding: 11px;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 14px;
             outline: none;
-            transition: border-color 0.2s;
         }
 
         input:focus, select:focus {
             border-color: var(--secondary);
-            box-shadow: 0 0 5px rgba(45, 106, 79, 0.2);
         }
 
         .child-box {
             background: #f9fbf9;
             border: 1px dashed var(--secondary);
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         .child-box h5 {
@@ -108,23 +102,17 @@
             background: var(--primary);
             color: white;
             border: none;
-            padding: 14px;
+            padding: 12px;
             font-size: 16px;
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
             width: 100%;
             margin-top: 25px;
-            transition: background 0.3s;
         }
 
         button:hover {
             background: var(--secondary);
-        }
-
-        button:disabled {
-            background: #a5d6a7;
-            cursor: not-allowed;
         }
     </style>
 </head>
@@ -136,21 +124,21 @@
         <small style="color: #6c757d;">يرجى تعبئة كافة الحقول المطلوبة بدقة</small>
     </div>
 
-    <form id="dataForm">
+    <form id="electionForm">
         <!-- بيانات الزوج -->
         <div class="section-title">بيانات الزوج (رب الأسرة)</div>
         <div class="grid">
             <div class="field">
-                <label>اسم الزوج رباعي *</label>
-                <input type="text" id="husbandName" required placeholder="أدخل الاسم الرباعي">
+                <label>الاسم رباعي *</label>
+                <input type="text" id="husbandName" required>
             </div>
             <div class="field">
-                <label>هوية الزوج *</label>
-                <input type="text" id="husbandId" required placeholder="أدخل رقم الهوية">
+                <label>رقم الهوية *</label>
+                <input type="text" id="husbandId" required>
             </div>
             <div class="field">
-                <label>جوال الزوج *</label>
-                <input type="tel" id="husbandPhone" required placeholder="059xxxxxxx">
+                <label>رقم جوال الزوج *</label>
+                <input type="tel" id="husbandPhone" required>
             </div>
         </div>
 
@@ -159,11 +147,15 @@
         <div class="grid">
             <div class="field">
                 <label>اسم الزوجة رباعي *</label>
-                <input type="text" id="wifeName" required placeholder="أدخل اسم الزوجة الرباعي">
+                <input type="text" id="wifeName" required>
             </div>
             <div class="field">
-                <label>هوية الزوجة *</label>
-                <input type="text" id="wifeId" required placeholder="أدخل رقم الهوية">
+                <label>رقم الهوية *</label>
+                <input type="text" id="wifeId" required>
+            </div>
+            <div class="field">
+                <label>رقم جوال الزوج (الزوجة)</label>
+                <input type="tel" id="wifePhone">
             </div>
         </div>
 
@@ -177,6 +169,9 @@
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
             </select>
         </div>
 
@@ -186,8 +181,8 @@
         <div class="section-title">التواصل الرئيسي</div>
         <div class="grid">
             <div class="field" style="grid-column: 1 / -1;">
-                <label>جوال الأب للتواصل الرئيسي *</label>
-                <input type="tel" id="fatherPhone" required placeholder="059xxxxxxx">
+                <label>رقم جوال الأب للتواصل الرئيسي *</label>
+                <input type="tel" id="fatherPhone" required>
             </div>
         </div>
 
@@ -202,21 +197,19 @@
         const container = document.getElementById('childrenContainer');
         container.innerHTML = '';
 
-        const childLabels = ["الأول", "الثاني", "الثالث", "الرابع"];
-
-        for (let i = 0; i < count; i++) {
+        for (let i = 1; i <= count; i++) {
             const div = document.createElement('div');
             div.className = 'child-box';
             div.innerHTML = `
-                <h5>بيانات الابن ${childLabels[i]}</h5>
+                <h5>بيانات الابن/الابنة رقم (${i})</h5>
                 <div class="grid">
                     <div class="field">
-                        <label>اسم الابن ${childLabels[i]} رباعي *</label>
-                        <input type="text" class="child-name" required placeholder="الاسم رباعي">
+                        <label>الاسم رباعي *</label>
+                        <input type="text" class="child-name" required>
                     </div>
                     <div class="field">
-                        <label>هوية الابن ${childLabels[i]} *</label>
-                        <input type="text" class="child-id" required placeholder="رقم الهوية">
+                        <label>رقم الهوية *</label>
+                        <input type="text" class="child-id" required>
                     </div>
                 </div>
             `;
@@ -224,26 +217,23 @@
         }
     }
 
-    // ضع رابط Google Apps Script الخاص بك هنا
+    // الرابط الخاص بك
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby6othIt04hSVvBtDhg7FZArJ2asyJRdGgetLCTsD9L5-ZxwFgazogHtzruBaMhPJN69w/exec";
 
-    document.getElementById('dataForm').addEventListener('submit', function(e) {
+    document.getElementById('electionForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
         btn.innerText = "جاري إرسال البيانات...";
 
-        // تجميع عناصر الأبناء
+        // تجميع بيانات الأبناء
         const nameInputs = document.querySelectorAll('.child-name');
         const idInputs = document.querySelectorAll('.child-id');
-        let childrenList = [];
+        let childrenFormatted = [];
 
         for (let i = 0; i < nameInputs.length; i++) {
-            childrenList.push({
-                name: nameInputs[i].value,
-                id: idInputs[i].value
-            });
+            childrenFormatted.push(`${nameInputs[i].value} (${idInputs[i].value})`);
         }
 
         const payload = {
@@ -252,7 +242,8 @@
             husbandPhone: document.getElementById('husbandPhone').value,
             wifeName: document.getElementById('wifeName').value,
             wifeId: document.getElementById('wifeId').value,
-            childrenList: childrenList,
+            wifePhone: document.getElementById('wifePhone').value,
+            childrenData: childrenFormatted.join(" | ") || "لا يوجد",
             fatherPhone: document.getElementById('fatherPhone').value
         };
 
@@ -262,13 +253,13 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         }).then(() => {
-            alert('تم حفظ البيانات بنجاح في الجدول!');
-            document.getElementById('dataForm').reset();
+            alert('تم حفظ البيانات بنجاح في الشيت!');
+            document.getElementById('electionForm').reset();
             renderChildrenFields();
             btn.disabled = false;
             btn.innerText = "حفظ وإرسال البيانات";
         }).catch(err => {
-            alert('حدث خطأ أثناء الإرسال، يرجى المحاولة لاحقاً');
+            alert('حدث خطأ أثناء الإرسال');
             btn.disabled = false;
             btn.innerText = "حفظ وإرسال البيانات";
         });
