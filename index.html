@@ -191,7 +191,6 @@
 </div>
 
 <script>
-    // تغيير خانات الأبناء تلقائياً بنفس الصفحة
     function renderChildrenFields() {
         const count = parseInt(document.getElementById('childrenCount').value);
         const container = document.getElementById('childrenContainer');
@@ -217,8 +216,8 @@
         }
     }
 
-    // الرابط الخاص بك
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby6othIt04hSVvBtDhg7FZArJ2asyJRdGgetLCTsD9L5-ZxwFgazogHtzruBaMhPJN69w/exec";
+    // تم وضع الرابط الجديد الخاص بك هنا
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwCwShu0txdaxixfKNEMRDuqBwn3HijvGZbbLyoXAJtlUFNcGfHadEkQM_ZjjSWYMjn-w/exec";
 
     document.getElementById('electionForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -227,13 +226,15 @@
         btn.disabled = true;
         btn.innerText = "جاري إرسال البيانات...";
 
-        // تجميع بيانات الأبناء
         const nameInputs = document.querySelectorAll('.child-name');
         const idInputs = document.querySelectorAll('.child-id');
-        let childrenFormatted = [];
+        let childrenList = [];
 
         for (let i = 0; i < nameInputs.length; i++) {
-            childrenFormatted.push(`${nameInputs[i].value} (${idInputs[i].value})`);
+            childrenList.push({
+                name: nameInputs[i].value,
+                id: idInputs[i].value
+            });
         }
 
         const payload = {
@@ -243,7 +244,8 @@
             wifeName: document.getElementById('wifeName').value,
             wifeId: document.getElementById('wifeId').value,
             wifePhone: document.getElementById('wifePhone').value,
-            childrenData: childrenFormatted.join(" | ") || "لا يوجد",
+            childrenCount: document.getElementById('childrenCount').value,
+            childrenList: childrenList,
             fatherPhone: document.getElementById('fatherPhone').value
         };
 
